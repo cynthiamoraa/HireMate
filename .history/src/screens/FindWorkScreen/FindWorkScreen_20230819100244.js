@@ -60,7 +60,7 @@ const FindWorkScreen = () => {
   };
 
   const handleOnGetApplicants = (postId) => {
-    navigation.navigate('Applicant',{postId});
+    navigation.navigate('Applicant',{postId:id});
   };
 
   const apply = async (id) => {

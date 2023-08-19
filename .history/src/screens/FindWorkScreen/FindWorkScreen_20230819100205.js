@@ -59,7 +59,7 @@ const FindWorkScreen = () => {
     console.log('Search for:', searchText);
   };
 
-  const handleOnGetApplicants = (postId) => {
+  const handleOnGetApplicants = () => {
     navigation.navigate('Applicant',{postId});
   };
 

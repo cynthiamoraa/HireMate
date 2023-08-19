@@ -2,7 +2,6 @@ import { View, Text } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomButton from '../../components/CustomButton/CustomButton';
 
 const ApplicantScreen = () => {
 
@@ -47,30 +46,19 @@ useEffect(() => {
 
 
   return (
-    <View className="m-4 ">
+    <View>
       {userData && (
         <View>
           <Text className="text-lg font-semibold">This job was posted by</Text>
-          <Text className="text-lg p-1 ml-2">Title: {userData.title}</Text>
-          <Text className="text-lg p-1 ml-2">
-            Username: {userData.postedBy.username}
-          </Text>
-          <Text className="text-lg p-1 ml-2">
-            Email: {userData.postedBy.email}
-          </Text>
+          <Text>Title: {userData.title}</Text>
+          <Text>Username: {userData.postedBy.username}</Text>
+          <Text>Email: {userData.postedBy.email}</Text>
 
-          <Text className="text-lg font-semibold">Applicants for the job:</Text>
+          <Text className="text-lg font-semibold">Applicants for the :</Text>
           {userData.apply.map((applicant, index) => (
-            <View key={index} className="p-3 flex-row">
-              <View>
-                <Text className="text-lg">Username: {applicant.username}</Text>
-                <Text className="text-lg">Email: {applicant.email}</Text>
-              </View>
-              <CustomButton
-                text="Hire"
-                bgColor="#3D7DEB"
-                textColor={'#fff'}
-              />
+            <View key={index}>
+              <Text>Username: {applicant.username}</Text>
+              <Text>Email: {applicant.email}</Text>
             </View>
           ))}
         </View>

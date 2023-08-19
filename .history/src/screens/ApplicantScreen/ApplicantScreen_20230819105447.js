@@ -2,7 +2,6 @@ import { View, Text } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomButton from '../../components/CustomButton/CustomButton';
 
 const ApplicantScreen = () => {
 
@@ -47,33 +46,38 @@ useEffect(() => {
 
 
   return (
-    <View className="m-4 ">
+    <View>
+      <Text>Applicants for this Post:</Text>
       {userData && (
         <View>
-          <Text className="text-lg font-semibold">This job was posted by</Text>
-          <Text className="text-lg p-1 ml-2">Title: {userData.title}</Text>
-          <Text className="text-lg p-1 ml-2">
-            Username: {userData.postedBy.username}
-          </Text>
-          <Text className="text-lg p-1 ml-2">
-            Email: {userData.postedBy.email}
-          </Text>
-
-          <Text className="text-lg font-semibold">Applicants for the job:</Text>
-          {userData.apply.map((applicant, index) => (
-            <View key={index} className="p-3 flex-row">
-              <View>
-                <Text className="text-lg">Username: {applicant.username}</Text>
-                <Text className="text-lg">Email: {applicant.email}</Text>
-              </View>
-              <CustomButton
-                text="Hire"
-                bgColor="#3D7DEB"
-                textColor={'#fff'}
-              />
-            </View>
-          ))}
+          <Text>Username: {userData.postedBy.username}</Text>
+          <Text>Email: {userData.postedBy.email}</Text>
         </View>
+
+          <Text>Applicants:</Text>
+      {applyArray.map((applyItem, index) => (
+        <View key={index}>
+          <Text>Username: {applyItem.username}</Text>
+          <Text>Email: {applyItem.email}</Text>
+        </View>
+      ))}
+    </View>
+  );
+};
+
+export default PostComponent;
+In this example, the applyArray.map function is used to iterate over the "apply" array and render the usernames and emails for each entry in the JSX. Replace the JSX structure with your actual component structure as needed.
+
+Remember to import the necessary components from the 'react-native' library (View and Text in this case). Also, make sure you replace the usage of the postData variable with your actual data source.
+
+This code will dynamically render the usernames and emails from the "apply" array in your React Native component.
+
+
+
+
+
+
+
       )}
     </View>
   );

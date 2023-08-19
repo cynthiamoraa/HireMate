@@ -59,8 +59,8 @@ const FindWorkScreen = () => {
     console.log('Search for:', searchText);
   };
 
-  const handleOnGetApplicants = (postId) => {
-    navigation.navigate('Applicant',{postId});
+  const handleOnGetApplicants = () => {
+    navigation.navigate('Applicant', {userid: '64c232b96c0de784b892a804'});
   };
 
   const apply = async (id) => {
@@ -169,7 +169,7 @@ const FindWorkScreen = () => {
             )}
             <CustomButton
               text={item.apply.length + ' applicants'}
-              onPress={() => handleOnGetApplicants(item._id)}
+              onPress={handleOnGetApplicants}
               bgColor="#3D7DEB"
               textColor={'#fff'}
             />

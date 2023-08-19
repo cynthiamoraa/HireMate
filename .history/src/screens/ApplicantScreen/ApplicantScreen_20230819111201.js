@@ -61,13 +61,14 @@ useEffect(() => {
 
           <Text className="text-lg font-semibold">Applicants for the job:</Text>
           {userData.apply.map((applicant, index) => (
-            <View key={index} className="p-3 flex-row">
+            <View key={index} className="p-3">
               <View>
                 <Text className="text-lg">Username: {applicant.username}</Text>
                 <Text className="text-lg">Email: {applicant.email}</Text>
               </View>
               <CustomButton
-                text="Hire"
+                text="unApply"
+                
                 bgColor="#3D7DEB"
                 textColor={'#fff'}
               />

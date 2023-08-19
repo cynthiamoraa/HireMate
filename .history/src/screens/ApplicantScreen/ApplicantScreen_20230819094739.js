@@ -1,10 +1,16 @@
-import {View, Text, TextInput, TouchableOpacity,ScrollView,Alert} from 'react-native';
-import React,{useState,useEffect, useContext} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import CustomButton from '../../components/CustomButton/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 const FindWorkScreen = () => {
   const [searchText, setSearchText] = useState('');
@@ -27,12 +33,12 @@ const FindWorkScreen = () => {
 
         const result = await response.json();
         console.log(result);
-         const appliedStatesObj = {};
-         result.posts.forEach(post => {
-           appliedStatesObj[post._id] = false; // Initialize all states as false
-         });
+        const appliedStatesObj = {};
+        result.posts.forEach(post => {
+          appliedStatesObj[post._id] = false; // Initialize all states as false
+        });
 
-         setAppliedStates(appliedStatesObj);
+        setAppliedStates(appliedStatesObj);
 
         setData(result.posts);
       } catch (error) {
@@ -41,7 +47,6 @@ const FindWorkScreen = () => {
     };
     fetchData();
   }, []);
-
 
   const handleSearch = () => {
     const filteredData = data.filter(item => {
@@ -59,18 +64,18 @@ const FindWorkScreen = () => {
     console.log('Search for:', searchText);
   };
 
-  const handleOnGetApplicants = (postId) => {
-    navigation.navigate('Applicant',{postId});
+  const handleOnGetApplicants = () => {
+    navigation.navigate('Applicant');
   };
 
-  const apply = async (id) => {
+  const apply = async id => {
     try {
       const token = await AsyncStorage.getItem('jwt');
       const response = await fetch('http://172.18.0.1:8000/apply', {
         method: 'put',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token,
+          Authorization: 'Bearer ' + token,
         },
         body: JSON.stringify({
           postId: id,
@@ -78,8 +83,8 @@ const FindWorkScreen = () => {
       });
       const result = await response.json();
       console.log(result);
-       const newAppliedStates = {...appliedStates, [id]: true}; // Update the applied state for the specific item
-       setAppliedStates(newAppliedStates);
+      const newAppliedStates = {...appliedStates, [id]: true}; // Update the applied state for the specific item
+      setAppliedStates(newAppliedStates);
       const newData = data.map(item => {
         if (item._id === result._id) {
           return result;
@@ -88,60 +93,16 @@ const FindWorkScreen = () => {
         }
       });
       setData(newData);
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error fetching data:', error);
     }
-   
   };
-    const unapply = async id => {
-      try {
-        const token = await AsyncStorage.getItem('jwt');
-        const response = await fetch('http://172.18.0.1:8000/unapply', {
-          method: 'put',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-          },
-          body: JSON.stringify({
-            postId: id,
-          }),
-        });
-        const result = await response.json();
-        console.log(result);
-          const newAppliedStates = {...appliedStates, [id]: false}; // Update the applied state for the specific item
-          setAppliedStates(newAppliedStates);
-        const newData = data.map(item => {
-          if (item._id === result._id) {
-            return result;
-          } else {
-            return item;
-          }
-        });
-        setData(newData);
-
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-      
-    };
-
 
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} className="m-4">
       <Text className="text-center font-bold mt-5 text-lg">FindWork</Text>
-      <View className=" flex ">
-        <TextInput
-          className="border mt-5  p-4 rounded-full text-lg "
-          placeholder="Search..."
-          value={searchText}
-          onChangeText={setSearchText}
-        />
-        <TouchableOpacity onPress={handleSearch} className="ml-80 mt-[-39]">
-          <Icon name="search" size={30} color="#3D7DEB" />
-        </TouchableOpacity>
-      </View>
+      
 
       {data.map(item => {
         return (
@@ -152,27 +113,14 @@ const FindWorkScreen = () => {
               posted by:{' '}
               <Text className="text-[#3D7DEB]">{item.postedBy.username}</Text>
             </Text>
-            {appliedStates[item._id] ? (
-              <CustomButton
-                text="unApply"
-                onPress={() => unapply(item._id)}
-                bgColor="#3D7DEB"
-                textColor={'#fff'}
-              />
-            ) : (
+        
               <CustomButton
                 text="Apply"
                 onPress={() => apply(item._id)}
                 bgColor="#3D7DEB"
                 textColor={'#fff'}
               />
-            )}
-            <CustomButton
-              text={item.apply.length + ' applicants'}
-              onPress={() => handleOnGetApplicants(item._id)}
-              bgColor="#3D7DEB"
-              textColor={'#fff'}
-            />
+
           </View>
         );
       })}

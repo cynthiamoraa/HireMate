@@ -70,6 +70,8 @@ useEffect(() => {
                 text="Hire"
                 bgColor="#3D7DEB"
                 textColor={'#fff'}
+                padding={10}
+                textSize={16}
               />
             </View>
           ))}

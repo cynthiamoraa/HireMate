@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FindWorkScreen = () => {
   const [searchText, setSearchText] = useState('');
-  const [appliedStates, setAppliedStates] = useState({});
+  const [isapplied, setIsapplied] = useState(false);
   const navigation = useNavigation();
 
   const [data, setData] = useState([]);
@@ -27,12 +27,7 @@ const FindWorkScreen = () => {
 
         const result = await response.json();
         console.log(result);
-         const appliedStatesObj = {};
-         result.posts.forEach(post => {
-           appliedStatesObj[post._id] = false; // Initialize all states as false
-         });
-
-         setAppliedStates(appliedStatesObj);
+        
 
         setData(result.posts);
       } catch (error) {
@@ -59,8 +54,8 @@ const FindWorkScreen = () => {
     console.log('Search for:', searchText);
   };
 
-  const handleOnGetApplicants = (postId) => {
-    navigation.navigate('Applicant',{postId});
+  const handleOnGetApplicants = () => {
+    navigation.navigate('Applicant', {userid: '64c232b96c0de784b892a804'});
   };
 
   const apply = async (id) => {
@@ -78,8 +73,6 @@ const FindWorkScreen = () => {
       });
       const result = await response.json();
       console.log(result);
-       const newAppliedStates = {...appliedStates, [id]: true}; // Update the applied state for the specific item
-       setAppliedStates(newAppliedStates);
       const newData = data.map(item => {
         if (item._id === result._id) {
           return result;
@@ -92,7 +85,7 @@ const FindWorkScreen = () => {
     catch (error) {
       console.error('Error fetching data:', error);
     }
-   
+    setIsapplied(true);
   };
     const unapply = async id => {
       try {
@@ -109,8 +102,6 @@ const FindWorkScreen = () => {
         });
         const result = await response.json();
         console.log(result);
-          const newAppliedStates = {...appliedStates, [id]: false}; // Update the applied state for the specific item
-          setAppliedStates(newAppliedStates);
         const newData = data.map(item => {
           if (item._id === result._id) {
             return result;
@@ -123,7 +114,7 @@ const FindWorkScreen = () => {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-      
+      setIsapplied(false);
     };
 
 
@@ -152,7 +143,7 @@ const FindWorkScreen = () => {
               posted by:{' '}
               <Text className="text-[#3D7DEB]">{item.postedBy.username}</Text>
             </Text>
-            {appliedStates[item._id] ? (
+            {isapplied ? (
               <CustomButton
                 text="unApply"
                 onPress={() => unapply(item._id)}
@@ -166,10 +157,11 @@ const FindWorkScreen = () => {
                 bgColor="#3D7DEB"
                 textColor={'#fff'}
               />
-            )}
+            )
+            }
             <CustomButton
               text={item.apply.length + ' applicants'}
-              onPress={() => handleOnGetApplicants(item._id)}
+              onPress={handleOnGetApplicants}
               bgColor="#3D7DEB"
               textColor={'#fff'}
             />
